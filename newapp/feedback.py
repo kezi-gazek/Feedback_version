@@ -26,7 +26,7 @@ ACTIVITY_FEEDBACK_MAP = {
     "2025秋游反馈、学时问卷":"",
     "2025暑苹果北大行":"tblgCIUX1f3Masm5",
     "2025暑资助部电访":"tblmBaPRWLMMDWgT",
-    '2025暑王搏计划走访':'tblG5s8CyTQFd1Oe',
+    '2025暑王搏走访':'tblG5s8CyTQFd1Oe',
     "2025秋河北计划十一走访":"",
     "2025秋联络资助人":"",
     "2025秋友伴我行书信活动":"",
@@ -473,4 +473,5 @@ if st.sidebar.button("重置查询"):
     st.session_state.all_member_data = None
     st.session_state.tenant_access_token = None
     st.experimental_rerun()
+
 
