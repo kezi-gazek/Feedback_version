@@ -174,10 +174,9 @@ def get_activity_feedback(tenant_access_token, app_token, feedback_table_id, stu
         ]
     }
     
-    url = f"https://open.feishu.cn/open-apis/bitable/v1/apps/{app_token}/tables/{feedback_table_id}/records/search"
+    url = f"https://open.feishu.cn/open-apis/bitable/v1/apps/{app_token}/tables/{feedback_table_id}/records/search?page_size=500"
     payload = json.dumps({
-        "filter": filter_conditions,
-        "page_size": 500
+        "filter": filter_conditions
     })
     
     headers = {
@@ -386,3 +385,4 @@ if st.sidebar.button("重置查询"):
     st.session_state.tenant_access_token = None
 
     st.experimental_rerun()
+
