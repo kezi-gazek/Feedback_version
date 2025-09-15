@@ -177,7 +177,7 @@ def get_activity_feedback(tenant_access_token, app_token, feedback_table_id, stu
     url = f"https://open.feishu.cn/open-apis/bitable/v1/apps/{app_token}/tables/{feedback_table_id}/records/search"
     payload = json.dumps({
         "filter": filter_conditions,
-        "page_size": 10
+        "page_size": 500
     })
     
     headers = {
@@ -322,7 +322,7 @@ if search_name and search_id:
                                     for idx, feedback in enumerate(feedbacks, 1):
                                         st.write(f"**反馈记录 {idx}**")
                                         if feedback["核心内容"]:
-                                            st.write(f"**核心内容**: {feedback['核心内容']}")
+                                            st.write(f"**参与活动内容**: {feedback['核心内容']}")
                                         if feedback["感想"]:
                                             st.write(f"**感想**: {feedback['感想']}")
                                         if feedback["志愿学时"]:
@@ -384,4 +384,5 @@ st.sidebar.warning("""
 if st.sidebar.button("重置查询"):
     st.session_state.all_member_data = None
     st.session_state.tenant_access_token = None
+
     st.experimental_rerun()
