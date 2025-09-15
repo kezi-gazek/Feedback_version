@@ -11,9 +11,66 @@ EXCLUDED_FIELDS = [
     "主要活动的部组（多选）", "骨干", "入社日期", "姓名", "学号", "年级", "性别", "院系"
 ]
 
-# 活动到反馈表的映射（示例，您需要根据实际情况添加更多）
+# 活动到反馈表的映射
 ACTIVITY_FEEDBACK_MAP = {
     "2025暑修社史": "tblwatMzzNIg79pp",
+    '2025秋社刊美编':'tblu7KQSebGtkPbY',
+    '9.09手工x海淀团委':'tblV3D5hQtH2u7y9',
+    "2025秋百团大战":"",
+    "2025秋迎新大会反馈、学时问卷":"",
+    "2025秋社庆反馈、学时问卷":"",
+    "2025秋收衣服反馈、学时问卷":"",
+    "2025秋定向越野反馈、学时问卷":"",
+    "2025秋社办整理反馈、学时问卷":"",
+    "2025秋周边征订与发放反馈、学时问卷":"",
+    "2025秋游反馈、学时问卷":"",
+    "2025暑苹果北大行":"tblgCIUX1f3Masm5",
+    "2025暑资助部电访":"tblmBaPRWLMMDWgT",
+    '2025暑王搏计划走访':'tblG5s8CyTQFd1Oe',
+    "2025秋河北计划十一走访":"",
+    "2025秋联络资助人":"",
+    "2025秋友伴我行书信活动":"",
+    "2025秋友伴我行线下活动":"",
+    "2025秋王搏计划影展":"",
+    "2025秋河北计划讲座":"",
+    "2025蒲公英支教":"",
+    "2025儿童之家":"",
+    "2025同心活动":"",
+    "2025心障关怀":"",
+    "2025海豚乐乐":"",
+    "2025乡镇学堂":"",
+    "2025秋中医药文化进校园活动":"",
+    "2025秋敬老院活动":"",
+    "2025秋智能手机教学":"tblJa0JBjkEYvXYO",
+    "2025秋入户陪伴活动":"",
+    "2025秋护老周":"",
+    "2025秋人生回忆录":"",
+    "2025秋视频拍摄 & 剪辑培训":"",
+    "9.13守望星空影展":"tblj972yK3WmBLC3",
+    "2025秋金盲杖":"",
+    "2025秋温馨家园":"",
+    "2025秋教英语":"",
+    "2025秋图书校对":"",
+    "2025秋无障碍茶会":"tblFnwoiVE4C0QJ1",
+    "2025秋盲文小团":"",
+    "2025秋守望星空":"",
+    "2025秋无障碍素拓":"",
+    "2025秋罕见病群体交流":"",
+    "9.20北京天文馆无障碍交流活动":"",
+    "9.12-9.14福祉博览会展览":"",
+    "2025秋百团快闪":"",
+    "2025秋再回首手语班":"",
+    "2025秋聋听交流":"",
+    "2025秋燕园浮生手语班":"",
+    "2025秋手随歌舞手语角":"",
+    "2025秋初相见手语班":"",
+    "2025秋第二十九届万里行茶话会":"",
+    "2025秋万里行茶话会":"",
+    "2025秋项目组面试":"",
+    "2025秋万里行纪念品制作":"",
+    "2025秋项目组修史":"",
+    "2025万里行学校征集":"",
+    "2025万里行学校":""
     # 添加更多活动到反馈表的映射
     # "活动名称": "table_id",
 }
@@ -41,7 +98,7 @@ def get_bitable_datas(tenant_access_token, app_token, table_id, page_token='', p
     if page_token:
         url += f"&page_token={page_token}"
     
-    # 添加user_id_type参数（根据飞书API文档建议）
+    # 添加user_id_type参数
     url += "&user_id_type=user_id"
     
     # 使用空请求体
@@ -162,21 +219,23 @@ def search_member_by_info(member_data, name, student_id):
 
 def get_activity_feedback(tenant_access_token, app_token, feedback_table_id, student_id):
     """获取活动反馈数据"""
-    # 构建查询条件，根据学号查找反馈记录
-    filter_conditions = {
-        "operator": "and",
-        "conditions": [
-            {
-                "field_name": "学号",
-                "operator": "is",
-                "value": student_id
-            }
-        ]
-    }
+    # 使用正确的飞书API查询格式
+    url = f"https://open.feishu.cn/open-apis/bitable/v1/apps/{app_token}/tables/{feedback_table_id}/records/search"
     
-    url = f"https://open.feishu.cn/open-apis/bitable/v1/apps/{app_token}/tables/{feedback_table_id}/records/search?page_size=500"
+    # 构建正确的查询条件格式
     payload = json.dumps({
-        "filter": filter_conditions
+        "view_id": "vewhAjevsI",  # 添加视图ID
+        "filter": {
+            "conjunction": "and",  # 使用conjunction而不是operator
+            "conditions": [
+                {
+                    "field_name": "学号",
+                    "operator": "is",
+                    "value": [str(student_id)]  # 将值包装在列表中
+                }
+            ]
+        },
+        "automatic_fields": True
     })
     
     headers = {
@@ -187,10 +246,36 @@ def get_activity_feedback(tenant_access_token, app_token, feedback_table_id, stu
     response = requests.request("POST", url, headers=headers, data=payload)
     result = response.json()
     
+    # 调试信息
+    # st.write(f"反馈查询响应: {result}")
+    
     if result.get("code") != 0:
+        st.error(f"反馈查询失败: {result.get('msg')}")
         return []
     
     return result.get("data", {}).get("items", [])
+
+def extract_text_from_field(value):
+    """从飞书字段中提取纯文本"""
+    if value is None:
+        return ""
+    
+    # 如果是列表，处理每个元素
+    if isinstance(value, list):
+        texts = []
+        for item in value:
+            if isinstance(item, dict) and 'text' in item:
+                texts.append(item['text'])
+            elif isinstance(item, str):
+                texts.append(item)
+        return ", ".join(texts)
+    
+    # 如果是字典，尝试提取text字段
+    if isinstance(value, dict) and 'text' in value:
+        return value['text']
+    
+    # 其他情况，直接转换为字符串
+    return str(value)
 
 def process_feedback_data(feedback_items):
     """处理反馈数据"""
@@ -199,9 +284,12 @@ def process_feedback_data(feedback_items):
     for item in feedback_items:
         fields = item.get("fields", {})
         
+        # 调试信息
+        # st.write(f"原始反馈字段: {fields}")
+        
         # 提取核心内容
-        core_content = fields.get("是否是核心内容", "")
-        other_content = fields.get("其他活动内容", "")
+        core_content = extract_text_from_field(fields.get("是否是核心内容", ""))
+        other_content = extract_text_from_field(fields.get("其他活动内容", ""))
         
         # 处理核心内容
         if core_content and "其他" in core_content:
@@ -216,12 +304,12 @@ def process_feedback_data(feedback_items):
         # 查找包含"感想"的字段
         reflection = ""
         for key, value in fields.items():
-            if "感想" in key and value:
-                reflection = value
+            if "感想" in key:
+                reflection = extract_text_from_field(value)
                 break
         
         # 提取志愿学时
-        volunteer_hours = fields.get("志愿学时", "")
+        volunteer_hours = extract_text_from_field(fields.get("志愿学时", ""))
         
         feedbacks.append({
             "核心内容": core_content,
@@ -321,16 +409,17 @@ if search_name and search_id:
                                     for idx, feedback in enumerate(feedbacks, 1):
                                         st.write(f"**反馈记录 {idx}**")
                                         if feedback["核心内容"]:
-                                            st.write(f"**参与活动内容**: {feedback['核心内容']}")
+                                            st.write(f"**核心内容**: {feedback['核心内容']}")
                                         if feedback["感想"]:
                                             st.write(f"**感想**: {feedback['感想']}")
                                         if feedback["志愿学时"]:
                                             st.write(f"**志愿学时**: {feedback['志愿学时']}")
-                                        st.write("---")
+                                        if idx < len(feedbacks):
+                                            st.write("---")
                                 else:
                                     st.info("暂无反馈记录")
                         else:
-                            st.write(f"{i}. {activity}")
+                            st.write(f"{activity}")
                 else:
                     st.info("暂无活动记录")
                 
@@ -383,6 +472,4 @@ st.sidebar.warning("""
 if st.sidebar.button("重置查询"):
     st.session_state.all_member_data = None
     st.session_state.tenant_access_token = None
-
     st.experimental_rerun()
-
