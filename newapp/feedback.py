@@ -3,6 +3,7 @@ import requests
 import pandas as pd
 import streamlit as st
 from datetime import datetime
+import os
 
 # 需要排除的非活动字段
 EXCLUDED_FIELDS = [
@@ -324,10 +325,10 @@ st.set_page_config(page_title="成员活动查询系统", layout="wide")
 st.title("🎯 成员活动记录查询系统")
 
 # 应用配置
-app_id = 'cli_a84f183c3ff8100d'
-app_secret = 'b8ELILD9IqaaYFbOOB6L2cyX6oODLczj'
-app_token = 'NPcMbmMI6a06jmsaXoscwLcqnBf'
-table_id = "tblE5QYLVyf7YBmE"
+app_id = os.environ.get('APP_ID', 'default_app_id')
+app_secret = os.environ.get('APP_SECRET', 'default_app_secret')
+app_token = os.environ.get('APP_TOKEN', 'default_app_token')
+table_id = os.environ.get('TABLE_ID','default_table_id')
 
 # 初始化session state
 if 'all_member_data' not in st.session_state:
@@ -473,6 +474,7 @@ if st.sidebar.button("重置查询"):
     st.session_state.all_member_data = None
     st.session_state.tenant_access_token = None
     st.experimental_rerun()
+
 
 
 
