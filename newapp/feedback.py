@@ -71,7 +71,8 @@ ACTIVITY_FEEDBACK_MAP = {
     "2025秋万里行纪念品制作":"tblOPr3RxhG5DTJ0",
     "2025秋项目组修史":"tblxdgjpH3clJXnj",
     "2025万里行学校征集":"tblacJmKsE51nXQK",
-    "2025万里行学校考察":"tblq44HLbcAMZV2w"
+    "2025万里行学校考察":"tblq44HLbcAMZV2w",
+    '9月20日同心圆游园会':'tblKZ7dWs35qQAdk'
     # 添加更多活动到反馈表的映射
     # "活动名称": "table_id",
 }
@@ -474,6 +475,7 @@ if st.sidebar.button("重置查询"):
     st.session_state.all_member_data = None
     st.session_state.tenant_access_token = None
     st.experimental_rerun()
+
 
 
 
