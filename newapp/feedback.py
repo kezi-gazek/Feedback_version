@@ -2,7 +2,7 @@ import json
 import requests
 import pandas as pd
 import streamlit as st
-from datetime import datetime,timezone
+from datetime import datetime,timezone,timedelta
 import os
 
 # 需要排除的非活动字段
@@ -216,7 +216,7 @@ def process_single_member(item):
     
     if join_date_timestamp and join_date_timestamp != 0:
         try:
-            join_date = datetime.fromtimestamp(join_date_timestamp / 1000).strftime('%Y-%m-%d')
+            join_date = datetime.fromtimestamp(join_date_timestamp / 1000)+timedelta(days=1).strftime('%Y-%m-%d')
             days_since_join = calculate_days_since_join(join_date_timestamp)
         except:
             join_date = "未知日期"
@@ -584,6 +584,7 @@ st.sidebar.warning("""
 本系统仅用于查询个人活动记录，不会显示其他成员的信息。
 您的个人信息将严格保密，不会用于其他用途。
 """)
+
 
 
 
