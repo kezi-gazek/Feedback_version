@@ -211,22 +211,23 @@ def process_single_member(item):
     join_date_timestamp = fields.get("入社日期", 0)
     
     # 处理入社日期
-    join_date = ""
-    days_since_join = None
-    
     if join_date_timestamp and join_date_timestamp != 0:
         try:
-            # 方案1a：使用UTC时区
-            join_date = datetime.fromtimestamp(join_date_timestamp / 1000, tz=timezone.utc).strftime('%Y/%m/%d')
+            timestamp_seconds = join_date_timestamp / 1000
+            raw_dt = datetime.fromtimestamp(timestamp_seconds)
+            utc_dt = datetime.utcfromtimestamp(timestamp_seconds)
             
-            # 方案1b：或者使用本地时区
-            # join_date = datetime.fromtimestamp(join_date_timestamp / 1000).strftime('%Y/%m/%d')
+            print(f"原始时间戳: {join_date_timestamp}")
+            print(f"本地时间: {raw_dt}")
+            print(f"UTC时间: {utc_dt}")
+            print(f"时区差异: {raw_dt - utc_dt}")
             
-            days_since_join = calculate_days_since_join(join_date_timestamp / 1000)
+            # 根据实际情况选择正确的转换方式
+            join_date = utc_dt.strftime('%Y/%m/%d')  # 或使用 raw_dt
+            days_since_join = calculate_days_since_join(timestamp_seconds)
         except Exception as e:
             join_date = "未知日期"
             days_since_join = None
-            print(f"日期转换错误: {e}")
     
     # 提取参加的活动（排除指定字段）
     activities = []
@@ -591,6 +592,7 @@ st.sidebar.warning("""
 本系统仅用于查询个人活动记录，不会显示其他成员的信息。
 您的个人信息将严格保密，不会用于其他用途。
 """)
+
 
 
 
