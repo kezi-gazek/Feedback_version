@@ -420,7 +420,7 @@ if 'last_search_id' not in st.session_state:
     st.session_state.last_search_id = ""
 
 # 查询界面
-st.info("请输入您的姓名和学号查询个人活动记录（仅可查询2025年暑期之后参加的活动噢~）")
+st.info("请输入您的姓名和学号查询爱心足迹（仅可查询2025年暑期之后参加的活动噢~）")
 
 col1, col2 = st.columns(2)
 with col1:
@@ -583,6 +583,7 @@ st.sidebar.warning("""
 本系统仅用于查询个人活动记录，不会显示其他成员的信息。
 您的个人信息将严格保密，不会用于其他用途。
 """)
+
 
 
 
