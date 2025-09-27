@@ -179,6 +179,23 @@ def search_member_directly(tenant_access_token, app_token, table_id, name, stude
     
     return None
 
+def calculate_days_since_join(join_date_timestamp):
+    """计算入社至今的天数"""
+    if not join_date_timestamp or join_date_timestamp == 0:
+        return None
+    
+    try:
+        # 将时间戳转换为datetime对象
+        join_date = datetime.fromtimestamp(join_date_timestamp / 1000)
+        
+        # 计算与当前日期的差值
+        today = datetime.now()
+        days_since_join = (today - join_date).days
+        
+        return days_since_join
+    except:
+        return None
+
 def process_single_member(item):
     """处理单个成员数据"""
     fields = item.get("fields", {})
@@ -192,12 +209,16 @@ def process_single_member(item):
     grade = fields.get("年级", "")
     gender = fields.get("性别", "")
     department = fields.get("院系", "")
-    join_date = fields.get("入社日期", 0)
+    join_date_timestamp = fields.get("入社日期", 0)
     
-    # 转换时间戳为日期
-    if join_date:
+    # 处理入社日期
+    join_date = ""
+    days_since_join = None
+    
+    if join_date_timestamp and join_date_timestamp != 0:
         try:
-            join_date = datetime.fromtimestamp(join_date / 1000).strftime('%Y-%m-%d')
+            join_date = datetime.fromtimestamp(join_date_timestamp / 1000).strftime('%Y-%m-%d')
+            days_since_join = calculate_days_since_join(join_date_timestamp)
         except:
             join_date = "未知日期"
     
@@ -220,6 +241,7 @@ def process_single_member(item):
         "性别": gender,
         "院系": department,
         "入社日期": join_date,
+        "入社天数": days_since_join,
         "参加活动数": len(activities),
         "参加的活动": activities
     }
@@ -436,15 +458,27 @@ if search_name and search_id:
                 # 显示个人信息
                 st.subheader("个人信息")
                 col1, col2, col3, col4 = st.columns(4)
+                
                 with col1:
                     st.write(f"**年级**: {member['年级']}")
-                    st.write(f"**入社日期**: {member['入社日期']}")
+                    # 显示入社日期和天数（如果不为空）
+                    if member['入社日期']:
+                        st.write(f"**入社日期**: {member['入社日期']}")
+                        if member['入社天数'] is not None:
+                            st.write(f"**入社天数**: {member['入社天数']} 天")
+                
                 with col2:
                     st.write(f"**院系**: {member['院系']}")
                     st.write(f"**参加活动数**: {member['参加活动数']}")
+                
                 with col3:
                     st.write(f"**性别**: {member['性别']}")
                     st.write(f"**总志愿学时**: **{total_hours:.1f}** 小时")
+                
+                # 如果入社日期为空，在第四列显示提示信息
+                with col4:
+                    if not member['入社日期']:
+                        st.info("💡 您的入社日期信息尚未录入")
                 
                 # 显示活动记录
                 st.subheader("参加的活动")
@@ -499,6 +533,7 @@ if search_name and search_id:
                             "性别": member["性别"],
                             "院系": member["院系"],
                             "入社日期": member["入社日期"],
+                            "入社天数": member["入社天数"] if member["入社天数"] is not None else "",
                             "活动名称": activity,
                             "志愿学时": activity_hour
                         })
@@ -524,7 +559,8 @@ st.sidebar.title("使用说明")
 st.sidebar.info("""
 1. 输入您的姓名和学号查询个人活动记录
 2. 系统只会显示与您姓名和学号完全匹配的记录
-2. 您可以导出您的活动记录为CSV文件
+3. 如果您的入社日期已录入，系统会显示入社至今的天数
+4. 您可以导出您的活动记录为CSV文件
 """)
 
 # 添加隐私声明
@@ -538,9 +574,3 @@ st.sidebar.warning("""
 if st.sidebar.button("重置查询"):
     st.session_state.tenant_access_token = None
     st.experimental_rerun()
-
-
-
-
-
-
