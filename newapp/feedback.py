@@ -430,14 +430,15 @@ if search_name and search_id:
                 col1, col2, col3, col4 = st.columns(4)
                 with col1:
                     st.write(f"**年级**: {member['年级']}")
-                    st.write(f"**性别**: {member['性别']}")
+                    st.write(f"**入社日期**: {member['入社日期']}")
                 with col2:
                     st.write(f"**院系**: {member['院系']}")
-                    st.write(f"**入社日期**: {member['入社日期']}")
-                with col3:
                     st.write(f"**参加活动数**: {member['参加活动数']}")
-                with col4:
+                with col3:
+                    st.write(f"**性别**: {member['性别']}")
                     st.write(f"**总志愿学时**: **{total_hours:.1f}** 小时")
+                with col4:
+
                 
                 # 显示活动记录
                 st.subheader("参加的活动")
@@ -449,7 +450,7 @@ if search_name and search_id:
                         
                         if feedback_table_id:
                             # 使用展开器显示活动详情和反馈
-                            with st.expander(f"{i}. {activity} (志愿学时: {activity_hour:.1f}小时)", expanded=False):
+                            with st.expander(f"{i}. {activity} ", expanded=False):
                                 # 获取活动反馈
                                 feedback_items = get_activity_feedback(
                                     st.session_state.tenant_access_token, 
@@ -535,3 +536,4 @@ st.sidebar.warning("""
 if st.sidebar.button("重置查询"):
     st.session_state.tenant_access_token = None
     st.experimental_rerun()
+
