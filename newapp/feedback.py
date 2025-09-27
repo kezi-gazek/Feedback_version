@@ -549,10 +549,7 @@ elif search_name or search_id:
 # 添加使用说明
 st.sidebar.title("使用说明")
 st.sidebar.info("""
-1. 输入您的姓名和学号查询个人活动记录
-2. 系统只会显示与您姓名和学号完全匹配的记录
-3. 如果您的入社日期已录入，系统会显示入社至今的天数
-4. 您可以导出您的活动记录为CSV文件
+输入您的姓名和学号查询个人活动记录，系统只会显示与您姓名和学号完全匹配的记录
 """)
 
 # 添加隐私声明
@@ -566,6 +563,7 @@ st.sidebar.warning("""
 if st.sidebar.button("重置查询"):
     st.session_state.tenant_access_token = None
     st.experimental_rerun()
+
 
 
 
