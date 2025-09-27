@@ -413,6 +413,12 @@ table_id = os.environ.get('TABLE_ID','default_table_id')
 # 初始化session state
 if 'tenant_access_token' not in st.session_state:
     st.session_state.tenant_access_token = None
+if 'query_clicked' not in st.session_state:
+    st.session_state.query_clicked = False
+if 'last_search_name' not in st.session_state:
+    st.session_state.last_search_name = ""
+if 'last_search_id' not in st.session_state:
+    st.session_state.last_search_id = ""
 
 # 查询界面
 st.subheader("个人信息查询")
@@ -424,8 +430,27 @@ with col1:
 with col2:
     search_id = st.text_input("学号", placeholder="请输入您的学号")
 
-# 搜索功能
-if search_name and search_id:
+# 添加查询按钮
+col1, col2, col3 = st.columns([1, 2, 1])
+with col2:
+    query_button = st.button("🔍 查询记录", type="primary", use_container_width=True)
+
+# 检查是否需要重置查询状态
+if (search_name != st.session_state.last_search_name or 
+    search_id != st.session_state.last_search_id):
+    st.session_state.query_clicked = False
+    st.session_state.last_search_name = search_name
+    st.session_state.last_search_id = search_id
+
+# 搜索功能 - 仅在点击查询按钮后执行
+if query_button:
+    if not search_name or not search_id:
+        st.warning("请同时输入姓名和学号进行查询")
+    else:
+        st.session_state.query_clicked = True
+
+# 如果查询按钮被点击且输入了姓名和学号，则执行查询
+if st.session_state.query_clicked and search_name and search_id:
     with st.spinner("小爱同学正在回顾您的爱心足迹..."):
         try:
             # 获取访问令牌
@@ -543,13 +568,13 @@ if search_name and search_id:
         
         except Exception as e:
             st.error(f"足迹生成过程中发生错误: {e}，请联系技术负责人反馈问题：gao1632717769")
-elif search_name or search_id:
-    st.warning("请同时输入姓名和学号进行查询")
 
 # 添加使用说明
 st.sidebar.title("使用说明")
 st.sidebar.info("""
-输入您的姓名和学号查询个人活动记录，系统只会显示与您姓名和学号完全匹配的记录
+1. 输入您的姓名和学号
+2. 点击"查询记录"按钮
+3. 系统只会显示与您姓名和学号完全匹配的记录
 """)
 
 # 添加隐私声明
@@ -562,9 +587,7 @@ st.sidebar.warning("""
 # 添加重置按钮
 if st.sidebar.button("重置查询"):
     st.session_state.tenant_access_token = None
+    st.session_state.query_clicked = False
+    st.session_state.last_search_name = ""
+    st.session_state.last_search_id = ""
     st.experimental_rerun()
-
-
-
-
-
