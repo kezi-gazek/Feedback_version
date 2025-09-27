@@ -446,8 +446,6 @@ if search_name and search_id:
                 with col3:
                     st.write(f"**性别**: {member['性别']}")
                     st.write(f"**总志愿学时**: **{total_hours:.1f}** 小时")
-                with col4:
-
                 
                 # 显示活动记录
                 st.subheader("参加的活动")
@@ -545,5 +543,6 @@ st.sidebar.warning("""
 if st.sidebar.button("重置查询"):
     st.session_state.tenant_access_token = None
     st.experimental_rerun()
+
 
 
