@@ -117,17 +117,16 @@ def get_bitable_datas(tenant_access_token, app_token, table_id, page_token='', p
     result = response.json()
     return result
 
-def get_all_records(tenant_access_token, app_token, table_id):
-    """获取所有记录（使用分页机制）"""
-    all_items = []
+def search_member_directly(tenant_access_token, app_token, table_id, name, student_id):
+    """直接搜索特定成员（逐页搜索，找到即停止）"""
     page_token = ''
     has_more = True
     page_count = 0
     
-    # 使用while循环获取所有分页数据
+    # 使用while循环逐页搜索
     while has_more:
         page_count += 1
-        st.info(f"正在获取第 {page_count} 页数据...")
+        st.info(f"正在搜索第 {page_count} 页数据...")
         
         # 获取当前页数据
         result = get_bitable_datas(tenant_access_token, app_token, table_id, page_token)
@@ -138,7 +137,23 @@ def get_all_records(tenant_access_token, app_token, table_id):
         
         data = result.get("data", {})
         items = data.get("items", [])
-        all_items.extend(items)
+        
+        # 在当前页中搜索目标成员
+        for item in items:
+            fields = item.get("fields", {})
+            record_id = item.get("record_id", "")
+            
+            # 提取基本信息用于匹配
+            name_data = fields.get("姓名", [{}])
+            current_name = name_data[0].get("text", "") if name_data and isinstance(name_data, list) else ""
+            current_student_id = fields.get("学号", "")
+            
+            # 检查是否匹配目标成员
+            if current_name == name and str(current_student_id) == str(student_id):
+                st.success(f"在第 {page_count} 页找到匹配成员")
+                # 处理找到的成员数据
+                processed_member = process_single_member(item)
+                return processed_member
         
         # 检查是否有更多数据
         has_more = data.get("has_more", False)
@@ -148,78 +163,57 @@ def get_all_records(tenant_access_token, app_token, table_id):
         import time
         time.sleep(0.05)
         
-        # 安全限制：最多获取25页数据（2500条记录）
+        # 安全限制：最多搜索25页数据
         if page_count >= 25:
-            st.warning("已达到最大页数限制（25页），停止获取更多数据")
+            st.warning("已达到最大页数限制（25页），停止搜索")
             break
     
-    return all_items
+    return None
 
-def process_member_data(items):
-    """处理成员数据"""
-    processed_data = []
+def process_single_member(item):
+    """处理单个成员数据"""
+    fields = item.get("fields", {})
+    record_id = item.get("record_id", "")
     
-    for item in items:
-        fields = item.get("fields", {})
-        record_id = item.get("record_id", "")
-        
-        # 提取基本信息
-        name_data = fields.get("姓名", [{}])
-        name = name_data[0].get("text", "") if name_data and isinstance(name_data, list) else ""
-        
-        student_id = fields.get("学号", "")
-        grade = fields.get("年级", "")
-        gender = fields.get("性别", "")
-        department = fields.get("院系", "")
-        join_date = fields.get("入社日期", 0)
-        
-        # 转换时间戳为日期
-        if join_date:
-            try:
-                join_date = datetime.fromtimestamp(join_date / 1000).strftime('%Y-%m-%d')
-            except:
-                join_date = "未知日期"
-        
-        # 提取参加的活动（排除指定字段）
-        activities = []
-        for key, value in fields.items():
-            # 跳过排除字段
-            if key in EXCLUDED_FIELDS:
-                continue
-            
-            # 如果值不为空，表示参加了该活动
-            if value is not None and value != {} and value != []:
-                activities.append(key)
-        
-        # 添加到处理后的数据
-        processed_data.append({
-            "record_id": record_id,
-            "姓名": name,
-            "学号": student_id,
-            "年级": grade,
-            "性别": gender,
-            "院系": department,
-            "入社日期": join_date,
-            "参加活动数": len(activities),
-            "参加的活动": activities
-        })
+    # 提取基本信息
+    name_data = fields.get("姓名", [{}])
+    name = name_data[0].get("text", "") if name_data and isinstance(name_data, list) else ""
     
-    return processed_data
-
-def search_member_by_info(member_data, name, student_id):
-    """根据姓名和学号搜索成员"""
-    results = []
+    student_id = fields.get("学号", "")
+    grade = fields.get("年级", "")
+    gender = fields.get("性别", "")
+    department = fields.get("院系", "")
+    join_date = fields.get("入社日期", 0)
     
-    for member in member_data:
-        # 严格匹配姓名和学号
-        name_match = member["姓名"] == name
-        id_match = str(member["学号"]) == str(student_id)
+    # 转换时间戳为日期
+    if join_date:
+        try:
+            join_date = datetime.fromtimestamp(join_date / 1000).strftime('%Y-%m-%d')
+        except:
+            join_date = "未知日期"
+    
+    # 提取参加的活动（排除指定字段）
+    activities = []
+    for key, value in fields.items():
+        # 跳过排除字段
+        if key in EXCLUDED_FIELDS:
+            continue
         
-        if name_match and id_match:
-            results.append(member)
-            break  # 找到匹配记录后立即停止搜索
+        # 如果值不为空，表示参加了该活动
+        if value is not None and value != {} and value != []:
+            activities.append(key)
     
-    return results
+    return {
+        "record_id": record_id,
+        "姓名": name,
+        "学号": student_id,
+        "年级": grade,
+        "性别": gender,
+        "院系": department,
+        "入社日期": join_date,
+        "参加活动数": len(activities),
+        "参加的活动": activities
+    }
 
 def get_activity_feedback(tenant_access_token, app_token, feedback_table_id, student_id):
     """获取活动反馈数据"""
@@ -250,9 +244,6 @@ def get_activity_feedback(tenant_access_token, app_token, feedback_table_id, stu
     response = requests.request("POST", url, headers=headers, data=payload)
     result = response.json()
     
-    # 调试信息
-    # st.write(f"反馈查询响应: {result}")
-    
     if result.get("code") != 0:
         st.error(f"反馈查询失败: {result.get('msg')}")
         return []
@@ -281,15 +272,30 @@ def extract_text_from_field(value):
     # 其他情况，直接转换为字符串
     return str(value)
 
+def parse_volunteer_hours(hours_str):
+    """解析志愿学时字符串，提取数字"""
+    if not hours_str:
+        return 0
+    
+    try:
+        # 移除可能的中文和空格，只保留数字和小数点
+        import re
+        # 匹配数字（包括小数）
+        numbers = re.findall(r'\d+\.?\d*', str(hours_str))
+        if numbers:
+            return float(numbers[0])
+        else:
+            return 0
+    except:
+        return 0
+
 def process_feedback_data(feedback_items):
-    """处理反馈数据"""
+    """处理反馈数据，返回反馈列表和总志愿学时"""
     feedbacks = []
+    total_hours = 0
     
     for item in feedback_items:
         fields = item.get("fields", {})
-        
-        # 调试信息
-        # st.write(f"原始反馈字段: {fields}")
         
         # 提取核心内容
         core_content = extract_text_from_field(fields.get("是否是核心内容", ""))
@@ -313,15 +319,57 @@ def process_feedback_data(feedback_items):
                 break
         
         # 提取志愿学时
-        volunteer_hours = extract_text_from_field(fields.get("志愿学时", ""))
+        volunteer_hours_str = extract_text_from_field(fields.get("志愿学时", ""))
+        volunteer_hours = parse_volunteer_hours(volunteer_hours_str)
+        total_hours += volunteer_hours
         
         feedbacks.append({
             "核心内容": core_content,
             "感想": reflection,
-            "志愿学时": volunteer_hours
+            "志愿学时": volunteer_hours_str,  # 保留原始字符串用于显示
+            "志愿学时数值": volunteer_hours   # 数值用于计算总和
         })
     
-    return feedbacks
+    return feedbacks, total_hours
+
+def calculate_total_volunteer_hours(tenant_access_token, app_token, member_activities, student_id):
+    """计算成员所有活动的总志愿学时"""
+    total_hours = 0
+    activity_hours = {}  # 存储每个活动的学时
+    
+    if not member_activities:
+        return 0, {}
+    
+    # 创建进度条
+    progress_bar = st.progress(0)
+    status_text = st.empty()
+    
+    for i, activity in enumerate(member_activities):
+        status_text.text(f"正在查询活动反馈: {activity} ({i+1}/{len(member_activities)})")
+        progress_bar.progress((i + 1) / len(member_activities))
+        
+        # 检查是否有对应的反馈表
+        feedback_table_id = ACTIVITY_FEEDBACK_MAP.get(activity)
+        
+        if feedback_table_id:
+            # 获取活动反馈
+            feedback_items = get_activity_feedback(
+                tenant_access_token, 
+                app_token, 
+                feedback_table_id, 
+                student_id
+            )
+            
+            if feedback_items:
+                feedbacks, activity_total_hours = process_feedback_data(feedback_items)
+                total_hours += activity_total_hours
+                activity_hours[activity] = activity_total_hours
+    
+    # 清理进度条
+    progress_bar.empty()
+    status_text.empty()
+    
+    return total_hours, activity_hours
 
 # Streamlit界面
 st.set_page_config(page_title="成员活动查询系统", layout="wide")
@@ -334,8 +382,6 @@ app_token = os.environ.get('APP_TOKEN', 'default_app_token')
 table_id = os.environ.get('TABLE_ID','default_table_id')
 
 # 初始化session state
-if 'all_member_data' not in st.session_state:
-    st.session_state.all_member_data = None
 if 'tenant_access_token' not in st.session_state:
     st.session_state.tenant_access_token = None
 
@@ -353,33 +399,35 @@ with col2:
 if search_name and search_id:
     with st.spinner("正在查询..."):
         try:
-            # 如果还没有加载所有数据，则先加载
-            if st.session_state.all_member_data is None:
-                # 获取访问令牌
-                if st.session_state.tenant_access_token is None:
-                    st.session_state.tenant_access_token = get_tenant_access_token(app_id, app_secret)
-                
-                # 获取所有记录
-                st.info("首次查询需要加载所有数据，请稍候...")
-                all_items = get_all_records(st.session_state.tenant_access_token, app_token, table_id)
-                
-                # 处理数据
-                st.session_state.all_member_data = process_member_data(all_items)
-                st.success(f"成功加载 {len(st.session_state.all_member_data)} 条成员记录")
+            # 获取访问令牌
+            if st.session_state.tenant_access_token is None:
+                st.session_state.tenant_access_token = get_tenant_access_token(app_id, app_secret)
             
-            # 搜索成员
-            results = search_member_by_info(st.session_state.all_member_data, search_name, search_id)
+            # 直接搜索成员（找到即停止）
+            member = search_member_directly(
+                st.session_state.tenant_access_token, 
+                app_token, 
+                table_id, 
+                search_name, 
+                search_id
+            )
             
-            if not results:
+            if not member:
                 st.warning("未找到匹配的成员记录，请检查姓名和学号是否正确")
             else:
-                member = results[0]
-                
                 st.success(f"找到您的记录: {member['姓名']} ({member['学号']})")
+                
+                # 计算总志愿学时
+                total_hours, activity_hours = calculate_total_volunteer_hours(
+                    st.session_state.tenant_access_token,
+                    app_token,
+                    member['参加的活动'],
+                    member['学号']
+                )
                 
                 # 显示个人信息
                 st.subheader("个人信息")
-                col1, col2, col3 = st.columns(3)
+                col1, col2, col3, col4 = st.columns(4)
                 with col1:
                     st.write(f"**年级**: {member['年级']}")
                     st.write(f"**性别**: {member['性别']}")
@@ -388,6 +436,8 @@ if search_name and search_id:
                     st.write(f"**入社日期**: {member['入社日期']}")
                 with col3:
                     st.write(f"**参加活动数**: {member['参加活动数']}")
+                with col4:
+                    st.write(f"**总志愿学时**: **{total_hours:.1f}** 小时")
                 
                 # 显示活动记录
                 st.subheader("参加的活动")
@@ -395,10 +445,11 @@ if search_name and search_id:
                     for i, activity in enumerate(member["参加的活动"], 1):
                         # 检查是否有对应的反馈表
                         feedback_table_id = ACTIVITY_FEEDBACK_MAP.get(activity)
+                        activity_hour = activity_hours.get(activity, 0)
                         
                         if feedback_table_id:
                             # 使用展开器显示活动详情和反馈
-                            with st.expander(f"{i}. {activity} (点击查看详情)", expanded=False):
+                            with st.expander(f"{i}. {activity} (志愿学时: {activity_hour:.1f}小时)", expanded=False):
                                 # 获取活动反馈
                                 feedback_items = get_activity_feedback(
                                     st.session_state.tenant_access_token, 
@@ -408,7 +459,7 @@ if search_name and search_id:
                                 )
                                 
                                 if feedback_items:
-                                    feedbacks = process_feedback_data(feedback_items)
+                                    feedbacks, _ = process_feedback_data(feedback_items)
                                     
                                     for idx, feedback in enumerate(feedbacks, 1):
                                         st.write(f"**反馈记录 {idx}**")
@@ -423,7 +474,7 @@ if search_name and search_id:
                                 else:
                                     st.info("暂无反馈记录")
                         else:
-                            st.write(f"{activity}")
+                            st.write(f"{i}. {activity} (暂无反馈表)")
                 else:
                     st.info("暂无活动记录")
                 
@@ -431,15 +482,21 @@ if search_name and search_id:
                 st.subheader("导出记录")
                 if st.button("导出我的活动记录"):
                     # 创建数据框
-                    df = pd.DataFrame([{
-                        "姓名": member["姓名"],
-                        "学号": member["学号"],
-                        "年级": member["年级"],
-                        "性别": member["性别"],
-                        "院系": member["院系"],
-                        "入社日期": member["入社日期"],
-                        "活动名称": activity
-                    } for activity in member["参加的活动"]])
+                    df_data = []
+                    for activity in member["参加的活动"]:
+                        activity_hour = activity_hours.get(activity, 0)
+                        df_data.append({
+                            "姓名": member["姓名"],
+                            "学号": member["学号"],
+                            "年级": member["年级"],
+                            "性别": member["性别"],
+                            "院系": member["院系"],
+                            "入社日期": member["入社日期"],
+                            "活动名称": activity,
+                            "志愿学时": activity_hour
+                        })
+                    
+                    df = pd.DataFrame(df_data)
                     
                     # 生成CSV
                     csv = df.to_csv(index=False, encoding='utf-8-sig')
@@ -460,9 +517,7 @@ st.sidebar.title("使用说明")
 st.sidebar.info("""
 1. 输入您的姓名和学号查询个人活动记录
 2. 系统只会显示与您姓名和学号完全匹配的记录
-3. 首次查询需要加载所有数据，请耐心等待
-4. 对于有反馈记录的活动，可以点击活动名称查看详情
-5. 您可以导出您的活动记录为CSV文件
+3. 您可以导出您的活动记录为CSV文件
 """)
 
 # 添加隐私声明
@@ -474,12 +529,5 @@ st.sidebar.warning("""
 
 # 添加重置按钮
 if st.sidebar.button("重置查询"):
-    st.session_state.all_member_data = None
     st.session_state.tenant_access_token = None
     st.experimental_rerun()
-
-
-
-
-
-
