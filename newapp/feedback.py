@@ -2,7 +2,7 @@ import json
 import requests
 import pandas as pd
 import streamlit as st
-from datetime import datetime
+from datetime import datetime,timezone
 import os
 
 # 需要排除的非活动字段
@@ -216,10 +216,17 @@ def process_single_member(item):
     
     if join_date_timestamp and join_date_timestamp != 0:
         try:
-            join_date = datetime.fromtimestamp(join_date_timestamp / 1000).strftime('%Y-%m-%d')
-            days_since_join = calculate_days_since_join(join_date_timestamp)
-        except:
+            # 方案1a：使用UTC时区
+            join_date = datetime.fromtimestamp(join_date_timestamp / 1000, tz=timezone.utc).strftime('%Y/%m/%d')
+            
+            # 方案1b：或者使用本地时区
+            # join_date = datetime.fromtimestamp(join_date_timestamp / 1000).strftime('%Y/%m/%d')
+            
+            days_since_join = calculate_days_since_join(join_date_timestamp / 1000)
+        except Exception as e:
             join_date = "未知日期"
+            days_since_join = None
+            print(f"日期转换错误: {e}")
     
     # 提取参加的活动（排除指定字段）
     activities = []
@@ -584,6 +591,7 @@ st.sidebar.warning("""
 本系统仅用于查询个人活动记录，不会显示其他成员的信息。
 您的个人信息将严格保密，不会用于其他用途。
 """)
+
 
 
 
