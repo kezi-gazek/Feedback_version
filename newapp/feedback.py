@@ -530,7 +530,7 @@ if st.session_state.query_clicked and search_name and search_id:
                                             st.write(f"**志愿学时**: {feedback['志愿学时']}")
                                         if idx < len(feedbacks):
                                             st.write("---")
-                    st.success(f"您的爱心足迹已生成！")
+                    st.write(f"您的爱心足迹已生成！")
                                 else:
                                     st.info("暂无反馈记录")
                         else:
