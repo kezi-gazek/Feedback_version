@@ -47,6 +47,7 @@ ACTIVITY_FEEDBACK_MAP = {
     "2025秋护老周":"tblumfhfNHjaQQRq",
     "2025秋人生回忆录":"tblPrN3wxvRyOEzC",
     "2025秋视频拍摄&剪辑培训":"tblI4hJryPqBZcHZ",
+    "9月21日宣传部第一次例会":"tblHUK4BwIbDQjS8",
     "9.13守望星空影展":"tblj972yK3WmBLC3",
     "2025秋金盲杖":"tblB74WxX7708aKd",
     "2025秋温馨家园":"tblHyvs5bWUwKgEd",
@@ -57,6 +58,7 @@ ACTIVITY_FEEDBACK_MAP = {
     "2025秋守望星空":"tblQrJ0NajzSvd2O",
     "2025秋无障碍素拓":"tblRTFLHDADtOlax",
     "2025秋罕见病群体交流":"tblwOmSFeQNiNkXn",
+    "9月20日无障碍部迎新会":"tbl7cSMfL5JoTcDa",
     "9.20北京天文馆无障碍交流活动":"tbl1ifyIewQaqtRt",
     "9.12-9.14福祉博览会展览":"tblcIDBLNKMQ2U47",
     "2025秋百团快闪":"tblsVkYmBLyQcGFT",
@@ -475,6 +477,7 @@ if st.sidebar.button("重置查询"):
     st.session_state.all_member_data = None
     st.session_state.tenant_access_token = None
     st.experimental_rerun()
+
 
 
 
