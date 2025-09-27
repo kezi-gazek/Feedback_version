@@ -397,12 +397,11 @@ def calculate_total_volunteer_hours(tenant_access_token, app_token, member_activ
     # 清理进度条
     progress_bar.empty()
     status_text.empty()
-    st.success(f"您的爱心足迹已生成！")
     return total_hours, activity_hours
 
 # Streamlit界面
 st.set_page_config(page_title="成员活动查询系统", layout="wide")
-st.title("🎯 成员活动记录查询系统")
+st.title("🎯 爱心社社员爱心足迹系统")
 
 # 应用配置
 app_id = os.environ.get('APP_ID', 'default_app_id')
@@ -421,7 +420,6 @@ if 'last_search_id' not in st.session_state:
     st.session_state.last_search_id = ""
 
 # 查询界面
-st.subheader("个人信息查询")
 st.info("请输入您的姓名和学号查询个人活动记录（仅可查询2025年暑期之后参加的活动噢~）")
 
 col1, col2 = st.columns(2)
@@ -433,7 +431,7 @@ with col2:
 # 添加查询按钮
 col1, col2, col3 = st.columns([1, 2, 1])
 with col2:
-    query_button = st.button("🔍 查询记录", type="primary", use_container_width=True)
+    query_button = st.button("🔍 生成爱心足迹", type="primary", use_container_width=True)
 
 # 检查是否需要重置查询状态
 if (search_name != st.session_state.last_search_name or 
@@ -532,6 +530,7 @@ if st.session_state.query_clicked and search_name and search_id:
                                             st.write(f"**志愿学时**: {feedback['志愿学时']}")
                                         if idx < len(feedbacks):
                                             st.write("---")
+                    st.success(f"您的爱心足迹已生成！")
                                 else:
                                     st.info("暂无反馈记录")
                         else:
@@ -584,10 +583,3 @@ st.sidebar.warning("""
 您的个人信息将严格保密，不会用于其他用途。
 """)
 
-# 添加重置按钮
-if st.sidebar.button("重置查询"):
-    st.session_state.tenant_access_token = None
-    st.session_state.query_clicked = False
-    st.session_state.last_search_name = ""
-    st.session_state.last_search_id = ""
-    st.experimental_rerun()
