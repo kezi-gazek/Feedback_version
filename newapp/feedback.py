@@ -456,11 +456,10 @@ if search_name and search_id:
                 )
                 
                 # 显示个人信息
-                st.subheader("个人信息")
+                st.subheader("社员概况")
                 col1, col2, col3, col4 = st.columns(4)
                 
                 with col1:
-                    st.write(f"**年级**: {member['年级']}")
                     # 显示入社日期和天数（如果不为空）
                     if member['入社日期']:
                         st.write(f"**入社日期**: {member['入社日期']}")
@@ -468,20 +467,18 @@ if search_name and search_id:
                             st.write(f"**入社天数**: {member['入社天数']} 天")
                 
                 with col2:
-                    st.write(f"**院系**: {member['院系']}")
                     st.write(f"**参加活动数**: {member['参加活动数']}")
                 
                 with col3:
-                    st.write(f"**性别**: {member['性别']}")
                     st.write(f"**总志愿学时**: **{total_hours:.1f}** 小时")
-                
+                    
                 # 如果入社日期为空，在第四列显示提示信息
                 with col4:
                     if not member['入社日期']:
                         st.info("💡 您的入社日期信息尚未录入")
                 
                 # 显示活动记录
-                st.subheader("参加的活动")
+                st.subheader("与爱心社的故事")
                 if member["参加的活动"]:
                     for i, activity in enumerate(member["参加的活动"], 1):
                         # 检查是否有对应的反馈表
@@ -517,7 +514,7 @@ if search_name and search_id:
                         else:
                             st.write(f"{i}. {activity} (暂无反馈表)")
                 else:
-                    st.info("暂无活动记录")
+                    st.info("似乎2025的暑假后还没有和爱心社的故事噢~期待在下次活动中与您相遇！")
                 
                 # 导出功能
                 st.subheader("导出记录")
@@ -529,9 +526,6 @@ if search_name and search_id:
                         df_data.append({
                             "姓名": member["姓名"],
                             "学号": member["学号"],
-                            "年级": member["年级"],
-                            "性别": member["性别"],
-                            "院系": member["院系"],
                             "入社日期": member["入社日期"],
                             "入社天数": member["入社天数"] if member["入社天数"] is not None else "",
                             "活动名称": activity,
@@ -574,3 +568,4 @@ st.sidebar.warning("""
 if st.sidebar.button("重置查询"):
     st.session_state.tenant_access_token = None
     st.experimental_rerun()
+
