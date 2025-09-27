@@ -35,6 +35,7 @@ ACTIVITY_FEEDBACK_MAP = {
     "2025秋盲文小团":"tblLboOXFqwTHo81",
     "9月20日无障碍部迎新会":"tbl7cSMfL5JoTcDa",
 
+    "2025秋国庆“金秋献礼，花香暖桑榆”插花活动":"tblCy4IGJSo6awCJ",
     "2025秋敬老院活动":"tblZpgbczef3891J",
     "2025秋人生回忆录":"tblPrN3wxvRyOEzC",
     "2025秋护老周":"tblumfhfNHjaQQRq",
@@ -583,6 +584,7 @@ st.sidebar.warning("""
 本系统仅用于查询个人活动记录，不会显示其他成员的信息。
 您的个人信息将严格保密，不会用于其他用途。
 """)
+
 
 
 
