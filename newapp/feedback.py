@@ -158,7 +158,6 @@ def search_member_directly(tenant_access_token, app_token, table_id, name, stude
             
             # 检查是否匹配目标成员
             if current_name == name and str(current_student_id) == str(student_id):
-                st.success(f"您的爱心足迹已生成！")
                 # 处理找到的成员数据
                 processed_member = process_single_member(item)
                 return processed_member
@@ -398,7 +397,7 @@ def calculate_total_volunteer_hours(tenant_access_token, app_token, member_activ
     # 清理进度条
     progress_bar.empty()
     status_text.empty()
-    
+    st.success(f"您的爱心足迹已生成！")
     return total_hours, activity_hours
 
 # Streamlit界面
@@ -567,5 +566,6 @@ st.sidebar.warning("""
 if st.sidebar.button("重置查询"):
     st.session_state.tenant_access_token = None
     st.experimental_rerun()
+
 
 
