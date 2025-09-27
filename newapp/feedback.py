@@ -133,16 +133,16 @@ def search_member_directly(tenant_access_token, app_token, table_id, name, stude
     page_count = 0
     
     # 使用while循环逐页搜索
+    st.info(f"小爱同学正在回顾您的爱心足迹...")
     while has_more:
         page_count += 1
-        st.info(f"正在搜索第 {page_count} 页数据...")
         
         # 获取当前页数据
         result = get_bitable_datas(tenant_access_token, app_token, table_id, page_token)
         
         if result.get("code") != 0:
             error_msg = result.get("msg", "未知错误")
-            raise Exception(f"获取数据失败 (第{page_count}页): {error_msg}")
+            raise Exception(f"获取数据失败: {error_msg}")
         
         data = result.get("data", {})
         items = data.get("items", [])
@@ -159,7 +159,7 @@ def search_member_directly(tenant_access_token, app_token, table_id, name, stude
             
             # 检查是否匹配目标成员
             if current_name == name and str(current_student_id) == str(student_id):
-                st.success(f"在第 {page_count} 页找到匹配成员")
+                st.success(f"您的爱心足迹已生成！")
                 # 处理找到的成员数据
                 processed_member = process_single_member(item)
                 return processed_member
@@ -539,6 +539,7 @@ st.sidebar.warning("""
 if st.sidebar.button("重置查询"):
     st.session_state.tenant_access_token = None
     st.experimental_rerun()
+
 
 
 
