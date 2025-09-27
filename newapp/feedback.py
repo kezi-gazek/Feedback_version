@@ -374,7 +374,7 @@ def calculate_total_volunteer_hours(tenant_access_token, app_token, member_activ
     status_text = st.empty()
     
     for i, activity in enumerate(member_activities):
-        status_text.text(f"正在查询活动反馈: {activity} ({i+1}/{len(member_activities)})")
+        status_text.text(f"{activity} ({i+1}/{len(member_activities)})")
         progress_bar.progress((i + 1) / len(member_activities))
         
         # 检查是否有对应的反馈表
@@ -566,6 +566,7 @@ st.sidebar.warning("""
 if st.sidebar.button("重置查询"):
     st.session_state.tenant_access_token = None
     st.experimental_rerun()
+
 
 
 
