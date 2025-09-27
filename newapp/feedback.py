@@ -133,7 +133,6 @@ def search_member_directly(tenant_access_token, app_token, table_id, name, stude
     page_count = 0
     
     # 使用while循环逐页搜索
-    st.info(f"小爱同学正在回顾您的爱心足迹...")
     while has_more:
         page_count += 1
         
@@ -428,7 +427,7 @@ with col2:
 
 # 搜索功能
 if search_name and search_id:
-    with st.spinner("正在查询..."):
+    with st.spinner("小爱同学正在回顾您的爱心足迹..."):
         try:
             # 获取访问令牌
             if st.session_state.tenant_access_token is None:
@@ -544,7 +543,7 @@ if search_name and search_id:
                     )
         
         except Exception as e:
-            st.error(f"查询过程中发生错误: {e}")
+            st.error(f"足迹生成过程中发生错误: {e}，请联系技术负责人反馈问题：gao1632717769")
 elif search_name or search_id:
     st.warning("请同时输入姓名和学号进行查询")
 
@@ -568,4 +567,5 @@ st.sidebar.warning("""
 if st.sidebar.button("重置查询"):
     st.session_state.tenant_access_token = None
     st.experimental_rerun()
+
 
