@@ -396,7 +396,7 @@ if 'tenant_access_token' not in st.session_state:
 
 # 查询界面
 st.subheader("个人信息查询")
-st.info("请输入您的姓名和学号查询个人活动记录")
+st.info("请输入您的姓名和学号查询个人活动记录（仅可查询2025年暑期之后参加的活动噢~）")
 
 col1, col2 = st.columns(2)
 with col1:
@@ -422,9 +422,8 @@ if search_name and search_id:
             )
             
             if not member:
-                st.warning("未找到匹配的成员记录，请检查姓名和学号是否正确")
+                st.warning("小爱同学查找失败了，请检查姓名和学号是否正确。若确实无误且您之前已加入过爱心社，请填写问卷：https://acngyried1he.feishu.cn/share/base/form/shrcnsgqhMNq6pJ43llUQ7M7rgg")
             else:
-                st.success(f"找到您的记录: {member['姓名']} ({member['学号']})")
                 
                 # 计算总志愿学时
                 total_hours, activity_hours = calculate_total_volunteer_hours(
@@ -539,6 +538,7 @@ st.sidebar.warning("""
 if st.sidebar.button("重置查询"):
     st.session_state.tenant_access_token = None
     st.experimental_rerun()
+
 
 
 
