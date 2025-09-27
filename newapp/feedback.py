@@ -14,9 +14,44 @@ EXCLUDED_FIELDS = [
 
 # 活动到反馈表的映射
 ACTIVITY_FEEDBACK_MAP = {
-    "2025暑修社史": "tblwatMzzNIg79pp",
-    '2025秋社刊美编':'tblu7KQSebGtkPbY',
+    '9月20日同心圆游园会':'tblKZ7dWs35qQAdk',
+    "2025蒲公英支教":"tblSAg9XFeDDCemv",
+    "2025儿童之家":"tbleo0cd0JCWqjao",
+    "2025同心活动":"tblaiSue8q3UL0Xk",
+    "2025心障关怀":"tbl0vRlv9k1C21ad",
+    "2025乡镇学堂":"tbl5X2BndS1SE0gj",
+    "2025海豚乐乐":"tbl25fXAzpa1vktZ",
+
+    "2025秋金盲杖":"tblB74WxX7708aKd",
+    "9.13守望星空影展":"tblj972yK3WmBLC3",
     '9.09手工x海淀团委':'tblV3D5hQtH2u7y9',
+    "2025秋温馨家园":"tblHyvs5bWUwKgEd",
+    "2025秋无障碍素拓":"tblRTFLHDADtOlax",
+    "2025秋罕见病群体交流":"tblwOmSFeQNiNkXn",
+    "2025秋教英语":"tbloJuVXxu7Mk9We",
+    "2025秋图书校对":"tblbJgXM8ez2hIQK",
+    "2025秋守望星空":"tblQrJ0NajzSvd2O",
+    "2025秋无障碍茶会":"tblFnwoiVE4C0QJ1",
+    "2025秋盲文小团":"tblLboOXFqwTHo81",
+    "9月20日无障碍部迎新会":"tbl7cSMfL5JoTcDa",
+
+    "2025秋敬老院活动":"tblZpgbczef3891J",
+    "2025秋人生回忆录":"tblPrN3wxvRyOEzC",
+    "2025秋护老周":"tblumfhfNHjaQQRq",
+    "2025秋智能手机教学":"tblJa0JBjkEYvXYO",
+    "2025秋入户陪伴活动":"tblQgWfWcJ1tWwoz",
+
+    '2025暑王搏计划走访':'tblG5s8CyTQFd1Oe',
+    "2025暑苹果北大行":"tblgCIUX1f3Masm5",
+    "2025暑资助部电访":"tblmBaPRWLMMDWgT",
+    "2025秋河北计划十一走访":"tblohlhZpCL4tCuK",
+    "2025秋联络资助人":"tblqs99pEzh7XQmi",
+    "2025秋友伴我行书信活动":"tblZ7gn7VIut1w8g",
+    "2025秋友伴我行线下活动":"tblhZAbDiqnOhZ2f",
+    "2025秋王搏计划影展":"tbli1bx3nSLbW1uX",
+    "2025秋河北计划讲座":"tblu55MQza5nG4s9",
+
+    "2025暑修社史": "tblwatMzzNIg79pp",
     "2025秋百团大战":"tblr5kAZxK0eU3ZN",
     "2025秋迎新大会":"tbleSdFN5iQ5hqql",
     "2025秋社庆":"tbl6CN0bIuUvpH5c",
@@ -25,48 +60,21 @@ ACTIVITY_FEEDBACK_MAP = {
     "2025秋社办整理":"tblLhFZDP3Smm6j2",
     "2025秋周边征订与发放":"tblnXVc3VQDhjwn0",
     "2025秋游":"tbljB20axcFQLyga",
-    "2025暑苹果北大行":"tblgCIUX1f3Masm5",
-    "2025暑资助部电访":"tblmBaPRWLMMDWgT",
-    '2025暑王搏计划走访':'tblG5s8CyTQFd1Oe',
-    "2025秋河北计划十一走访":"tblohlhZpCL4tCuK",
-    "2025秋联络资助人":"tblqs99pEzh7XQmi",
-    "2025秋友伴我行书信活动":"tblZ7gn7VIut1w8g",
-    "2025秋友伴我行线下活动":"tblhZAbDiqnOhZ2f",
-    "2025秋王搏计划影展":"tbli1bx3nSLbW1uX",
-    "2025秋河北计划讲座":"tblu55MQza5nG4s9",
-    "2025蒲公英支教":"tblSAg9XFeDDCemv",
-    "2025儿童之家":"tbleo0cd0JCWqjao",
-    "2025同心活动":"tblaiSue8q3UL0Xk",
-    "2025心障关怀":"tbl0vRlv9k1C21ad",
-    "2025海豚乐乐":"tbl25fXAzpa1vktZ",
-    "2025乡镇学堂":"tbl5X2BndS1SE0gj",
-    "2025秋中医药文化进校园活动":"tbl0coPekbAr8D92",
-    "2025秋敬老院活动":"tblZpgbczef3891J",
-    "2025秋智能手机教学":"tblJa0JBjkEYvXYO",
-    "2025秋入户陪伴活动":"tblQgWfWcJ1tWwoz",
-    "2025秋护老周":"tblumfhfNHjaQQRq",
-    "2025秋人生回忆录":"tblPrN3wxvRyOEzC",
+
+    '2025秋社刊美编':'tblu7KQSebGtkPbY',
     "2025秋视频拍摄&剪辑培训":"tblI4hJryPqBZcHZ",
     "9月21日宣传部第一次例会":"tblHUK4BwIbDQjS8",
-    "9.13守望星空影展":"tblj972yK3WmBLC3",
-    "2025秋金盲杖":"tblB74WxX7708aKd",
-    "2025秋温馨家园":"tblHyvs5bWUwKgEd",
-    "2025秋教英语":"tbloJuVXxu7Mk9We",
-    "2025秋图书校对":"tblbJgXM8ez2hIQK",
-    "2025秋无障碍茶会":"tblFnwoiVE4C0QJ1",
-    "2025秋盲文小团":"tblLboOXFqwTHo81",
-    "2025秋守望星空":"tblQrJ0NajzSvd2O",
-    "2025秋无障碍素拓":"tblRTFLHDADtOlax",
-    "2025秋罕见病群体交流":"tblwOmSFeQNiNkXn",
-    "9月20日无障碍部迎新会":"tbl7cSMfL5JoTcDa",
-    "9.20北京天文馆无障碍交流活动":"tbl1ifyIewQaqtRt",
+    "2025秋平面设计培训":"tblTeEU3KlWBS0ru",
+
+    "9.28北京天文馆无障碍交流活动":"tbl1ifyIewQaqtRt",
     "9.12-9.14福祉博览会展览":"tblcIDBLNKMQ2U47",
-    "2025秋百团快闪":"tblsVkYmBLyQcGFT",
     "2025秋再回首手语班":"tblr2zj9g5f7GqSu",
     "2025秋聋听交流":"tblGsO4jYiAaoi5q",
     "2025秋燕园浮生手语班":"tbleB7SQQOUsKfVE",
     "2025秋手随歌舞手语角":"tblHeNUD64rj5s3C",
     "2025秋初相见手语班":"tbldAv2wNn3VMet8",
+    "2025秋百团快闪":"tblsVkYmBLyQcGFT",
+
     "2025秋第二十九届万里行茶话会":"tblhMI9ExnSS0PW8",
     "2025秋万里行茶话会":"tblLTQBetLiw0ecx",
     "2025秋项目组面试":"tblaRILhQasCbOCE",
@@ -74,7 +82,8 @@ ACTIVITY_FEEDBACK_MAP = {
     "2025秋项目组修史":"tblxdgjpH3clJXnj",
     "2025万里行学校征集":"tblacJmKsE51nXQK",
     "2025万里行学校考察":"tblq44HLbcAMZV2w",
-    '9月20日同心圆游园会':'tblKZ7dWs35qQAdk'
+
+    "2025秋中医药文化进校园活动":"tbl0coPekbAr8D92",
     # 添加更多活动到反馈表的映射
     # "活动名称": "table_id",
 }
@@ -536,4 +545,5 @@ st.sidebar.warning("""
 if st.sidebar.button("重置查询"):
     st.session_state.tenant_access_token = None
     st.experimental_rerun()
+
 
