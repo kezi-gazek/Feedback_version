@@ -57,8 +57,10 @@ ACTIVITY_FEEDBACK_MAP = {
     "2025秋河北计划讲座":"tblu55MQza5nG4s9",
 
     '2025秋扫雪':'tblzVoQoJQUAbjLi',
+    '2025秋爱心驿站系列栏目制作':'tblzVoQoJQUAbjLi',
     "2025暑修社史": "tblwatMzzNIg79pp",
     "2025秋百团大战":"tblr5kAZxK0eU3ZN",
+    '2025秋任务线1+n':'tbllo74ehXFiLKOD',
     "2025秋迎新大会":"tbleSdFN5iQ5hqql",
     "2025秋社庆":"tbl6CN0bIuUvpH5c",
     "2025秋收衣服":"tbl2b6lTEihx5MMs",
@@ -79,6 +81,7 @@ ACTIVITY_FEEDBACK_MAP = {
     "2025秋燕园浮生手语班":"tbleB7SQQOUsKfVE",
     "2025秋手随歌舞手语角":"tblHeNUD64rj5s3C",
     "2025秋初相见手语班":"tbldAv2wNn3VMet8",
+    '2025秋静园歌会':'tblHQWjhISfAtBUS’,
     "2025秋百团快闪":"tblsVkYmBLyQcGFT",
 
     "2025秋第二十九届万里行茶话会":"tblhMI9ExnSS0PW8",
@@ -90,6 +93,7 @@ ACTIVITY_FEEDBACK_MAP = {
     "2025万里行学校考察":"tblq44HLbcAMZV2w",
 
     "2025秋中医药文化进校园活动":"tbl0coPekbAr8D92",
+    '2025秋献血讲座':'tblqQdLd8NcpGGZu'
     # 添加更多活动到反馈表的映射
     # "活动名称": "table_id",
 }
@@ -590,6 +594,7 @@ st.sidebar.warning("""
 本系统仅用于查询个人活动记录，不会显示其他成员的信息。
 您的个人信息将严格保密，不会用于其他用途。
 """)
+
 
 
 
