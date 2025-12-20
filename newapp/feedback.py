@@ -81,7 +81,7 @@ ACTIVITY_FEEDBACK_MAP = {
     "2025秋燕园浮生手语班":"tbleB7SQQOUsKfVE",
     "2025秋手随歌舞手语角":"tblHeNUD64rj5s3C",
     "2025秋初相见手语班":"tbldAv2wNn3VMet8",
-    '2025秋静园歌会':'tblHQWjhISfAtBUS’,
+    '2025秋静园歌会':'tblHQWjhISfAtBUS',
     "2025秋百团快闪":"tblsVkYmBLyQcGFT",
 
     "2025秋第二十九届万里行茶话会":"tblhMI9ExnSS0PW8",
@@ -594,6 +594,7 @@ st.sidebar.warning("""
 本系统仅用于查询个人活动记录，不会显示其他成员的信息。
 您的个人信息将严格保密，不会用于其他用途。
 """)
+
 
 
 
