@@ -14,6 +14,7 @@ EXCLUDED_FIELDS = [
 
 # 活动到反馈表的映射
 ACTIVITY_FEEDBACK_MAP = {
+    '2025一分钟支教':'tblYHLxy60wnJ8HA',
     '9月20日同心圆游园会':'tblKZ7dWs35qQAdk',
     "2025蒲公英支教":"tblSAg9XFeDDCemv",
     "2025儿童之家":"tbleo0cd0JCWqjao",
@@ -23,11 +24,11 @@ ACTIVITY_FEEDBACK_MAP = {
     "2025海豚乐乐":"tbl25fXAzpa1vktZ",
 
     "2025秋金盲杖":"tblB74WxX7708aKd",
-    "9.13守望星空影展":"tblj972yK3WmBLC3",
     '9.09手工x海淀团委':'tblV3D5hQtH2u7y9',
+    "9.13守望星空影展":"tblj972yK3WmBLC3",
     "2025秋温馨家园":"tblHyvs5bWUwKgEd",
     "2025秋无障碍素拓":"tblRTFLHDADtOlax",
-    "2025秋罕见病群体交流":"tblwOmSFeQNiNkXn",
+    "2025秋体面劳动协力营":"tblwOmSFeQNiNkXn",
     "2025秋教英语":"tbloJuVXxu7Mk9We",
     "2025秋图书校对":"tblbJgXM8ez2hIQK",
     "2025秋守望星空":"tblQrJ0NajzSvd2O",
@@ -45,13 +46,17 @@ ACTIVITY_FEEDBACK_MAP = {
     '2025暑王搏计划走访':'tblG5s8CyTQFd1Oe',
     "2025暑苹果北大行":"tblgCIUX1f3Masm5",
     "2025暑资助部电访":"tblmBaPRWLMMDWgT",
+    '2025秋资助部日常工作':'tbl2vLt6URHr731c',
     "2025秋河北计划十一走访":"tblohlhZpCL4tCuK",
+    '1018资助部第一次例会':'tblBSuEpnkziOFlO',
+    '1129资助部第二次例会':'tbl0WEstgxKimVn3',
     "2025秋联络资助人":"tblqs99pEzh7XQmi",
-    "2025秋友伴我行书信活动":"tblZ7gn7VIut1w8g",
-    "2025秋友伴我行线下活动":"tblhZAbDiqnOhZ2f",
-    "2025秋王搏计划影展":"tbli1bx3nSLbW1uX",
+    "2025秋友伴我行第一次通信":"tblJvmjm9TEue6Eo",
+    '2025秋资助部影展策划':'tbli1bx3nSLbW1uX',
+    "2025秋资助部影展出摊":"tblahzMSbBM5MXGU",
     "2025秋河北计划讲座":"tblu55MQza5nG4s9",
 
+    '2025秋扫雪':'tblzVoQoJQUAbjLi',
     "2025暑修社史": "tblwatMzzNIg79pp",
     "2025秋百团大战":"tblr5kAZxK0eU3ZN",
     "2025秋迎新大会":"tbleSdFN5iQ5hqql",
@@ -585,6 +590,7 @@ st.sidebar.warning("""
 本系统仅用于查询个人活动记录，不会显示其他成员的信息。
 您的个人信息将严格保密，不会用于其他用途。
 """)
+
 
 
 
