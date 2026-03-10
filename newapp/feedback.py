@@ -218,6 +218,8 @@ def process_single_member(item):
     gender = fields.get("性别", "")
     department = fields.get("院系", "")
     join_date_timestamp = fields.get("入社日期", 0)
+    spoken_words_raw = fields.get("想说的话", "")
+    spoken_words = extract_text_from_field(spoken_words_raw)
     
     # 处理入社日期
     join_date = ""
@@ -252,7 +254,8 @@ def process_single_member(item):
         "入社日期": join_date,
         "入社天数": days_since_join,
         "参加活动数": len(activities),
-        "参加的活动": activities
+        "参加的活动": activities,
+        "想说的话": spoken_words
     }
 
 def get_activity_feedback(tenant_access_token, app_token, feedback_table_id, student_id):
@@ -508,7 +511,10 @@ if st.session_state.query_clicked and search_name and search_id:
                 with col4:
                     if not member['入社日期']:
                         st.info("💡 您的入社日期信息尚未录入")
-                
+
+                if member.get("想说的话"):
+                    st.markdown(f"**💬 想说的话**: {member['想说的话']}")
+                    
                 # 显示活动记录
                 st.subheader("与爱心社的故事")
                 if member["参加的活动"]:
@@ -594,6 +600,7 @@ st.sidebar.warning("""
 本系统仅用于查询个人活动记录，不会显示其他成员的信息。
 您的个人信息将严格保密，不会用于其他用途。
 """)
+
 
 
 
