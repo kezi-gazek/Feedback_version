@@ -513,7 +513,7 @@ if st.session_state.query_clicked and search_name and search_id:
                         st.info("💡 您的入社日期信息尚未录入")
 
                 if member.get("想说的话"):
-                    st.markdown(f"**💬 想说的话**: {member['想说的话']}")
+                    st.markdown(f"**💬 入社时想对爱心社说的话**: {member['想说的话']}")
                     
                 # 显示活动记录
                 st.subheader("与爱心社的故事")
@@ -600,6 +600,7 @@ st.sidebar.warning("""
 本系统仅用于查询个人活动记录，不会显示其他成员的信息。
 您的个人信息将严格保密，不会用于其他用途。
 """)
+
 
 
 
